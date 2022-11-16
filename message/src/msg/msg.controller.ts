@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Req } from '@nestjs/common';
 import { CreateMsgDto } from './dto/create-msg.dto';
 import { ValidationPipe } from '@nestjs/common';
 
