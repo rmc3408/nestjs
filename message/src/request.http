@@ -1,7 +1,7 @@
 @hostname = http://localhost
 @port = 3000
 @host = {{hostname}}:{{port}}
-@contentType = application/json
+@contentTypeValue = application/json
 
 
 ### List all messages
@@ -10,10 +10,11 @@ GET {{host}}/msg
 
 ### Post new message
 POST {{host}}/msg
-Content-Type: {{contentType}}
+Content-Type: {{contentTypeValue}}
 
 {
-  "payload": "Hi There"
+  "payload": "Hi There",
+  "size": 86
 }
 
 

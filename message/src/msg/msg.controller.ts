@@ -1,4 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { CreateMsgDto } from './dto/create-msg.dto';
+import { ValidationPipe } from '@nestjs/common';
+
 
 @Controller('msg')
 export class MsgController {
@@ -8,8 +11,8 @@ export class MsgController {
   }
 
   @Post()
-  createMessage(@Body() body: string) {
-    console.log('body is', body)
+  createMessage(@Body(new ValidationPipe()) body: CreateMsgDto) {
+    console.log('Validated body is', body)
   }
 
   @Get('/:id')
