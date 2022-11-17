@@ -13,9 +13,9 @@ POST {{host}}/msg
 Content-Type: {{contentTypeValue}}
 
 {
-  "payload": "Hi, new message created"
+  "payload": "New message created"
 }
 
 
 ### Get a message
-GET {{host}}/msg/5c97fde3-0221-4ca5-bab0-4422e78204dd
+GET {{host}}/msg/8e8439fa-b3e2-4fb5-8a1f-6307d7e19f3c
