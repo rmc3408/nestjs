@@ -21,8 +21,8 @@ build/Release
 
 # Dependency directories
 foundation-archicteture-basics/node_modules/
-message/node_modules
-dist/
+overview-project/node_modules
+**/dist/
 jspm_packages/
 
 # TypeScript v1 declaration files
