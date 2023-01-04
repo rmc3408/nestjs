@@ -1,0 +1,8 @@
+@hostname = http://localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@contentTypeValue = application/json
+
+
+### Get Computer - Run()
+GET {{host}}/computer
