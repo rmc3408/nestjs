@@ -13,8 +13,12 @@ export class UserEntity {
 
   @AfterInsert()
   @AfterUpdate()
-  @AfterRemove()
   logInsert() {
     console.log('Changes in user id = ', this.id);
+  }
+
+  @AfterRemove()
+  logRemove() {
+    console.log('Removed user id = ', this.id);
   }
 }
