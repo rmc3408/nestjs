@@ -1,10 +1,13 @@
-import { Controller, Post, Body, Get, Patch, Param, Query } from '@nestjs/common';
-import { Delete } from '@nestjs/common/decorators';
+import { Controller, Post, Body, Get, Patch, Param, Query, Delete } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common/pipes';
+import { User } from 'src/interceptor/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { SerializedUserDto } from './dto/serialize.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
+
+@User(SerializedUserDto) // To customize the final response body, use interceptors
 @Controller('auth')
 export class UserController {
 
