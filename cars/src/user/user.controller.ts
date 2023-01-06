@@ -11,9 +11,9 @@ import {
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 import { ValidationPipe } from '@nestjs/common/pipes';
-import { CurrentUser } from 'src/decorator/current-user.decorator';
-import { User } from 'src/decorator/user.decorator';
-import { AuthGuard } from 'src/guard/auth.guard';
+import { CurrentUser } from '../decorator/current-user.decorator';
+import { User } from '../decorator/user.decorator';
+import { AuthGuard } from '../guard/auth.guard';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { SerializedUserDto } from './dto/serialize.dto';

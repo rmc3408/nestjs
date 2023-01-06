@@ -16,7 +16,7 @@ export async function hashing(password: string): Promise<string> {
 
 export async function verifyHash(password, hash) {
   return new Promise((resolve, reject) => {
-    const [ key, salt ] = hash.split(".")
+    const [ key, salt ] = hash.split(".");
     scrypt(password, salt, 8, (err, derivedKey) => {
       if (err) reject(err);
       resolve(key == derivedKey.toString('hex'))
