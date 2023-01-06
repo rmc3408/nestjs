@@ -9,12 +9,13 @@ export class UserService {
   // Inject repository user from TypeORM with all pre-made functions
   constructor(@InjectRepository(UserEntity) private repo: Repository<UserEntity>) {}
   
-  create(user) {
-    const newUser = this.repo.create(user); // create a entity
+  async create(user) {
+    const newUser = await this.repo.create(user); // create a entity
     return this.repo.save(newUser); //save entity (executing hooks) or just data
   }
 
   findOneUser(id: number) {
+    if (!id) return null;
     return this.repo.findOneBy({ id });
   }
 
