@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import {
   BadRequestException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 describe('Auth Service', () => {
@@ -45,7 +46,6 @@ describe('Auth Service', () => {
 
   it('New user with a salted and hashed password', async () => {
     const user = await mockedAuthService.signUp(fakeUser);
-    expect(mockedAuthService).toBeDefined();
     expect(user[0].password).not.toEqual(fakeUser.password);
   });
 
@@ -58,33 +58,39 @@ describe('Auth Service', () => {
     }
   });
 
-  it('Signs up with USED email', async () => {
+  it('Sign up but already exist email', async () => {
     fakeUserService.findAllUsers = () => 
       Promise.resolve([{ id: 1, email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' }] as UserEntity[]);
     await expect(mockedAuthService.signUp(fakeUser)).rejects.toThrow(BadRequestException);
   });
 
   it('return a user if is right password', async () => {
-    fakeUserService.findAllUsers = jest.fn().mockClear();
-    fakeUserService.findAllUsers = () => Promise.resolve([
-        { email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' },
-      ] as UserEntity[]);
+    //fakeUserService.findAllUsers = jest.fn().mockClear();
+    fakeUserService.findAllUsers = () => 
+      Promise.resolve([{ email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' }] as UserEntity[]);
     const user = await mockedAuthService.signIn({email: 'a@a.com', password: 'secret@123'});
     await expect(user).toBeDefined();
   });
 
-  it('throws if an invalid password is provided', async () => {
-    jest.clearAllMocks();
+  it('throws Error if an invalid password is provided', async () => {
 
-    fakeUserService.findAllUsers = () => Promise.resolve([] as UserEntity[]);
+    //First user sign up with fake User.
+    await mockedAuthService.signUp(fakeUser);
+    fakeUserService.findAllUsers = () => //Data generated to database (email, hashPassword)
+      Promise.resolve([{ email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' }] as UserEntity[]);
+    
     jest.mock('./functions-auth.ts', () => {
       return {
         verifyHash: jest.fn().mockResolvedValue(false),
-        hashing: jest.fn().mockResolvedValue('011d7db45b18dbad.69f556e9-wrong'),
+        hashing: jest.fn().mockResolvedValue('011d7db45b18dbad.69f556e9+'),
       };
     });
-    await mockedAuthService.signUp(fakeUser);
-    await expect(mockedAuthService.signIn(fakeUser)).rejects.toThrow();
+    try {
+      await mockedAuthService.signIn({ email: 'a@a.com', password: 'anyValue' })
+    } catch (error) {
+      expect(error).toBeInstanceOf(UnauthorizedException);
+      expect(error).toHaveProperty('message', 'Unauthorized' );
+    }
   });
 });
 
