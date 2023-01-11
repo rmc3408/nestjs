@@ -1,6 +1,6 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, NotFoundException } from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 //Interceptor run before and after controller is trigger
 @Injectable()
@@ -12,7 +12,9 @@ export class CurrentUserInterceptor implements NestInterceptor {
     //before reach controller
     const request = context.switchToHttp().getRequest();
     const { userId } = request.session || {};
+    
     const user = await this.userService.findOneUser(userId);
+    
     request.session.currentUser = user;
 
     return callhandler.handle();

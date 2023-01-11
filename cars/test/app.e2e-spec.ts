@@ -1,9 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 
-describe('AppController (e2e)', () => {
+
+const userLogin = {
+  email: "molinaro@gmail.com",
+  password: "secret@123"
+}
+
+describe('Auth Controller (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -15,9 +21,9 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  test('sign Up - POST', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('')
       .expect(200)
       .expect('Hello World!');
   });
