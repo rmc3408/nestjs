@@ -8,89 +8,94 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-describe('Auth Service', () => {
-  const fakeUser = { email: 'a@a.com', password: 'secret@123' };
 
-  // Passwords is same.
-  jest.mock('./functions-auth.ts', () => {
-    return {
-      verifyHash: jest.fn().mockResolvedValue(true),
-      hashing: jest.fn().mockResolvedValue('011d7db45b18dbad.69f556e9'),
-    };
-  });
-
-  let mockedAuthService: AuthService;
-  let fakeUserService: Partial<UserService> = {
-    findAllUsers: jest.fn().mockResolvedValue([] as UserEntity[]),
-    create: (_user) => Promise.resolve([{ id: 36, email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' }] as UserEntity[]),
+// Mocking value of checking Passwords.
+jest.mock('./functions-auth.ts', () => {
+  return {
+    verifyHash: jest.fn()
+      .mockImplementationOnce(() => Promise.resolve('true'))
+      .mockImplementationOnce(() => { throw new UnauthorizedException('Unauthorized')})
+      .mockImplementationOnce(() => 'Third call'),
+    hashing: jest.fn().mockResolvedValue('011d7db45b18dbad.69f556e9'),
   };
+});
+const mockedVerifyHash = require('./functions-auth');
 
-  beforeEach(async () => {
-    const module = await Test.createTestingModule({
-      providers: [
-        AuthService,
-        {
-          provide: UserService,
-          useValue: fakeUserService,
-        },
-      ],
-    }).compile();
 
-    mockedAuthService = module.get(AuthService);
-    fakeUserService.findAllUsers = () => Promise.resolve([] as UserEntity[]);
-  });
+const fakeUser = { email: 'a@a.com', password: 'secret@123' };
+const userAllFound = [
+  { id: 1, email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' },
+  { id: 2, email: 'b@a.com', password: '0sfkssnf5b18good.28173844' }
+ ];
+let mockedAuthService: AuthService;
+let fakeUserService: Partial<UserService> = {
+  findAllUsers: jest.fn().mockResolvedValue([] as UserEntity[]),
+  create: (_user) => Promise.resolve([] as UserEntity[]),
+};
 
+beforeAll(async () => {
+  const module = await Test.createTestingModule({
+    providers: [
+      AuthService,
+      {
+        provide: UserService,
+        useValue: fakeUserService,
+      },
+    ],
+  }).compile();
+
+  mockedAuthService = module.get(AuthService);
+});
+
+beforeEach(() => {
+  fakeUserService.findAllUsers = () => Promise.resolve([] as UserEntity[]);
+})
+
+
+describe('Auth Service- SIGN UP', () => {
   it('Create Auth Service instance class', async () => {
     expect(mockedAuthService).toBeDefined();
   });
 
-  it('New user with a salted and hashed password', async () => {
-    const user = await mockedAuthService.signUp(fakeUser);
-    expect(user[0].password).not.toEqual(fakeUser.password);
+  it('Should signUP user and verify user already exist', async () => {
+    fakeUserService.findAllUsers = () => Promise.resolve(userAllFound as UserEntity[]);
+    await expect(mockedAuthService.signUp(fakeUser)).rejects.toThrow('User found already exist!');
+    await expect(mockedAuthService.signUp(fakeUser)).rejects.toThrow(BadRequestException);
   });
 
-  it('First time unused email in signIN throw error', async () => {
+  it('Should signUP user and save user create', async () => {
+    fakeUserService.create = (_user) => Promise.resolve(userAllFound as UserEntity[])
+    await expect((await mockedAuthService.signUp(fakeUser))[0]).toEqual(userAllFound[0]);
+  });
+});
+
+describe('Auth Service- SIGN IN', () => {
+  test('Should throw error if new user try to signIN without signup first', async () => {
     try {
       await mockedAuthService.signIn(fakeUser);
     } catch (error) {
       expect(error).toBeInstanceOf(NotFoundException);
-      expect(error).toHaveProperty('message', 'User not found, please first signUp!' );
+      expect(error).toHaveProperty('message', 'User not found, please first signUp!');
     }
-  });
-
-  it('Sign up but already exist email', async () => {
-    fakeUserService.findAllUsers = () => 
-      Promise.resolve([{ id: 1, email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' }] as UserEntity[]);
-    await expect(mockedAuthService.signUp(fakeUser)).rejects.toThrow(BadRequestException);
   });
 
   it('return a user if is right password', async () => {
-    //fakeUserService.findAllUsers = jest.fn().mockClear();
-    fakeUserService.findAllUsers = () => 
-      Promise.resolve([{ email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' }] as UserEntity[]);
-    const user = await mockedAuthService.signIn({email: 'a@a.com', password: 'secret@123'});
-    await expect(user).toBeDefined();
+    fakeUserService.findAllUsers = () => Promise.resolve(userAllFound as UserEntity[]);
+    const user = await mockedAuthService.signIn(fakeUser);
+    expect(user).toBeDefined();
+    expect(user.password).toEqual('011d7db45b18dbad.69f556e9')
   });
 
-  it('throws Error if an invalid password is provided', async () => {
-
-    //First user sign up with fake User.
-    await mockedAuthService.signUp(fakeUser);
-    fakeUserService.findAllUsers = () => //Data generated to database (email, hashPassword)
-      Promise.resolve([{ email: 'a@a.com', password: '011d7db45b18dbad.69f556e9' }] as UserEntity[]);
+  test('Should throw error if password is wrong', async () => {
+    fakeUserService.findAllUsers = () => Promise.resolve(userAllFound as UserEntity[]);
     
-    jest.mock('./functions-auth.ts', () => {
-      return {
-        verifyHash: jest.fn().mockResolvedValue(false),
-        hashing: jest.fn().mockResolvedValue('011d7db45b18dbad.69f556e9+'),
-      };
-    });
     try {
-      await mockedAuthService.signIn({ email: 'a@a.com', password: 'anyValue' })
+      await mockedAuthService.signIn(fakeUser);
     } catch (error) {
       expect(error).toBeInstanceOf(UnauthorizedException);
-      expect(error).toHaveProperty('message', 'Unauthorized' );
+      expect(error).toHaveProperty('message', 'Unauthorized');
     }
+    console.log(mockedVerifyHash.verifyHash())
+    expect(mockedVerifyHash.verifyHash.mock.results[1].type).toBe('throw')
   });
-});
-
+})
