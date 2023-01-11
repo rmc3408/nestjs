@@ -5,7 +5,7 @@ import { AppModule } from '../src/app.module';
 
 
 const userLogin = {
-  email: "molinaro@gmail.com",
+  email: "molinaro321@gmail.com",
   password: "secret@123"
 }
 
@@ -23,8 +23,12 @@ describe('Auth Controller (e2e)', () => {
 
   test('sign Up - POST', () => {
     return request(app.getHttpServer())
-      .get('')
-      .expect(200)
-      .expect('Hello World!');
+      .post('/auth/signup')
+      .send(userLogin)
+      .expect(201)
+      .then((res) => {
+        console.log(res.body);
+        expect(res.body.id).toBeDefined();
+      })
   });
 });

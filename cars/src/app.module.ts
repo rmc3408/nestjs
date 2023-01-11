@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -6,6 +6,7 @@ import { ReportModule } from './report/report.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user/user.entity';
 import { ReportEntity } from './report/report.entity';
+import * as cookies from 'express-session';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -17,4 +18,13 @@ import { ReportEntity } from './report/report.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(cookies({
+      secret: 'a',
+      resave: false,
+      saveUninitialized: false
+    })).forRoutes('*')
+  }
+}
