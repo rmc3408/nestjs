@@ -17,7 +17,9 @@ export class SerializeInterceptor implements NestInterceptor {
       .pipe(
         //tap((data) => console.log('Incoming entity Data is ', data)),
         map((data) => {
+          // console.log(data);
           const convertedClass = plainToInstance(this.genericDto, data, { excludeExtraneousValues: true});
+          console.log(convertedClass)
           return data === null ? {} : convertedClass
         })
       );

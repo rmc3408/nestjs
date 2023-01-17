@@ -12,7 +12,7 @@ import {
 import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 import { ValidationPipe } from '@nestjs/common/pipes';
 import { CurrentUser } from '../decorator/current-user.decorator';
-import { User } from '../decorator/user.decorator';
+import { customResponseSerializer } from '../decorator/serializer.decorator';
 import { AuthGuard } from '../guard/auth.guard';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,7 +21,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
-@User(SerializedUserDto) // To customize the final response body, use interceptors
+@customResponseSerializer(SerializedUserDto) // To customize the final response body, use interceptors
 @Controller('auth')
 export class UserController {
   // using Dependency injection here.
