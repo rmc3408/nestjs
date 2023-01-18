@@ -20,8 +20,6 @@ pids
 build/Release
 
 # Dependency directories
-foundation-archicteture-basics/node_modules/
-overview-project/node_modules
 **/dist/
 **/node_modules
 jspm_packages/

@@ -87,7 +87,7 @@ Content-Type: application/json
 }
 
 ### Aprove report - patch
-PATCH http://localhost:3000/report/23 HTTP/1.1
+PATCH http://localhost:3000/report/26 HTTP/1.1
 Content-Type: application/json
 
 {

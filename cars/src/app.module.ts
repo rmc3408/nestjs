@@ -34,13 +34,16 @@ import * as cookies from 'express-session';
   UserModule, 
   ReportModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ConfigService],
 })
 
+
 export class AppModule {
+  constructor(private configService: ConfigService) {}
+
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(cookies({
-      secret: 'a',
+      secret: this.configService.get<string>('COOKIE_KEY'),
       resave: false,
       saveUninitialized: false
     })).forRoutes('*')
