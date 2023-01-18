@@ -7,15 +7,15 @@ import {
   Patch,
   Param,
 } from '@nestjs/common';
-import { CurrentUser } from 'src/decorator/current-user.decorator';
-import { customResponseSerializer } from 'src/decorator/serializer.decorator';
-import { AuthGuard } from 'src/guard/auth.guard';
-import { UserEntity } from 'src/user/user.entity';
+import { CurrentUser } from '../decorator/current-user.decorator';
+import { customResponseSerializer } from '../decorator/serializer.decorator';
+import { AuthGuard } from '../guard/auth.guard';
+import { UserEntity } from '../user/user.entity';
 import { CreateReportDto } from './dto/create-report.dto';
 import { SerializedReportDto } from './dto/serialize-report.dto';
 import { ReportService } from './report.service';
 import { UpdateReportDto } from './dto/update-report.dto';
-import { AdminGuard } from 'src/guard/admin.guard';
+import { AdminGuard } from '../guard/admin.guard';
 import { GetEstimateDto } from './dto/get-estimate.dto';
 import { Get, Query } from '@nestjs/common/decorators';
 

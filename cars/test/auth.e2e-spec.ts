@@ -11,27 +11,20 @@ const userLogin = {
   password: "secret@123"
 }
 
+let app: INestApplication;
 
+beforeAll(async () => {
+  const moduleFixture: TestingModule = await Test.createTestingModule({
+    imports: [AppModule],
+  }).compile();
+
+  app = moduleFixture.createNestApplication();
+  await app.init();
+});
 
 describe('Auth Controller (e2e)', () => {
-  let app: INestApplication;
-
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
-
-  afterEach(async () => {
-    // console.log(join(__dirname, '..', 'udemy.cars.test.sqlite'));
-    await rm(join( __dirname , '..', 'udemy.cars.test.sqlite'), (err) => {
-      if (err) return;
-      //console.log("Deleted Database File successfully.");
-    });
-  })
+  
+  
 
   test('sign Up', () => {
     return request(app.getHttpServer())
@@ -59,3 +52,13 @@ describe('Auth Controller (e2e)', () => {
     expect(final.body.email).toEqual(userLogin.email)  
   });
 });
+
+afterAll(async () => {
+  await app.close();
+
+  rm(join( __dirname , '..', 'udemy.cars.test.sqlite'), (err) => {
+    //console.log(join( __dirname , '..', 'udemy.cars.test.sqlite'))
+    if (err) console.log(err);
+    //console.log("Deleted Database File successfully.");
+  });
+})

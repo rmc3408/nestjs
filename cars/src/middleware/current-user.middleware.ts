@@ -1,8 +1,8 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { Session } from 'express-session';
-import { UserEntity } from 'src/user/user.entity';
-import { UserService } from 'src/user/user.service';
+import { UserEntity } from '../user/user.entity';
+import { UserService } from '../user/user.service';
 
 type SessionWithUser = Session & 
   { 
