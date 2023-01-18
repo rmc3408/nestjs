@@ -1,6 +1,4 @@
-# NestJS: The Complete Developer's Guide
-
-![NestJS: The Complete Developer's Guide](https://res.cloudinary.com/practicaldev/image/fetch/s--m_Ng9MLF--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/fppjegg7q1kb2pdzmlvf.png)
+![NestJS: The Complete Developer's Guide](https://res.cloudinary.com/practicaldev/image/fetch/s--m_Ng9MLF--/c_imagga_scale,f_auto,fl_progressive,h_210,q_auto,w_500/https://dev-to-uploads.s3.amazonaws.com/i/fppjegg7q1kb2pdzmlvf.png)
 
 # NestJS: The Complete Developer's Guide by Stephen Grinder<br>
 Course: (https://www.udemy.com/course/nestjs-the-complete-developers-guide/) <br>
@@ -28,7 +26,7 @@ Here's a detailed look at what you'll get:
 - Segment your code into reusable Nest Modules
 - Add structure to your database using migrations
 
-<br><br><br>
+<br><br>
 
 ### Life cycle of Course Outline:
 | Section | Topics | Completed |
