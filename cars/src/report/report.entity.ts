@@ -29,4 +29,7 @@ export class ReportEntity {
 
   @ManyToOne(type => UserEntity, user => user.reports)
   user: UserEntity;
+
+  @Column({ default: false })
+  isAproved: boolean;
 }

@@ -15,6 +15,9 @@ export class UserEntity {
   @OneToMany(type => ReportEntity, report => report.user)
   reports: ReportEntity[];
 
+  @Column({ default: true })
+  admin: boolean;
+
   @AfterInsert()
   @AfterUpdate()
   logInsert() {
