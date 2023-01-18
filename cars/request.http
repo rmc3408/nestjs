@@ -77,13 +77,13 @@ POST http://localhost:3000/report HTTP/1.1
 Content-Type: application/json
 
 {
-  "price": 10.99,
+  "price": 200.00,
   "make": "Tesla",
   "model": "BtX",
-  "year": 2009,
+  "year": 2012,
   "latitude": -20.345,
   "longitude": 23.4567,
-  "mileage": 10000
+  "mileage": 5000
 }
 
 ### Aprove report - patch
@@ -103,6 +103,22 @@ Content-Type: application/json
   "password": "secret@123"
 }
 
+
+
 ### Get Estimate of Reports
-GET http://localhost:3000/report?make=Toyota&model=corolla&mileage=2000&year=1980&longitude=19.330&latitude=-11.90 HTTP/1.1
+@car-make=Tesla
+@car-model=BtX
+@car-lat=19.330
+@car-lgn=18.90
+@car-year=2010
+@car-mileage=10000
+
+GET http://localhost:3000/report
+  ?make={{car-make}}
+  &model={{car-model}}
+  &mileage={{car-mileage}}
+  &year={{car-year}}
+  &longitude={{car-lgn}}
+  &latitude={{car-lat}}
+  
 Content-Type: application/json

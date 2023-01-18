@@ -43,6 +43,7 @@ export class ReportController {
   @Get()
   @UseGuards(AuthGuard)
   async getEstimate(@Query(new ValidationPipe({ whitelist: true })) query: GetEstimateDto) {
-    console.log(query)
+    // console.log(query);
+    return this.reportService.createEstimate(query);
   }
 }
