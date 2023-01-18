@@ -40,7 +40,7 @@ Content-Type: application/json
 
 
 ### Get All users by email
-GET http://localhost:3000/auth?email=thereza@gmail.com HTTP/1.1
+GET http://localhost:3000/auth?email=molinaro@gmail.com HTTP/1.1
 Content-Type: application/json
 
 
