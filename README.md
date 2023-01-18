@@ -46,7 +46,9 @@ Here's a detailed look at what you'll get:
 | Section 13 | Integration testing | &check; | <br>
 | Section 14 | Managing App Configuration | &check; | <br>
 | Section 15 | Relation with TypeORM | &check; | <br>
-| Section 16 | A Basic Permission System |  | <br>
-| Section 17 | Query Builder with TypeORM |  | <br>
-| Section 18 | Production Deployment |  | <br>
-| Section 19 | Appendix: Typescript |  | <br>
+| Section 16 | A Basic Permission System | &check; | <br>
+| Section 17 | Query Builder with TypeORM | &check; | <br>
+| Section 18 | Production Deployment | &check; | <br>
+| Section 19 | Appendix: Typescript | &check; | <br>
+
+DEPLOYED AT HEROKU = 
