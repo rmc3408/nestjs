@@ -9,30 +9,36 @@ import { UserEntity } from './user/user.entity';
 import { ReportEntity } from './report/report.entity';
 import * as cookies from 'express-session';
 
+
 @Module({
   imports: [ 
-  ConfigModule.forRoot({
-    isGlobal: true,
-    envFilePath: `.env.${process.env.NODE_ENV}`
-  }),
-  TypeOrmModule.forRootAsync({
-    inject: [ConfigService],
-    useFactory: (config: ConfigService) => ({
-        type: 'sqlite',
-        database: config.get<string>('DB_FILENAME'),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        type: 'postgres',
+        url: process.env.DATABASE_URL,
+        //type: 'sqlite',
+        //database: config.get<string>('DB_FILENAME'),
         entities: [UserEntity, ReportEntity],
-        synchronize: true //do migration everytime starts.
-    })
-  }),
-  // Use this without .ENV files
-  // TypeOrmModule.forRoot({
-  //   type: 'sqlite',
-  //   database: 'udemy.cars.nestjs.sqlite',
-  //   entities: [UserEntity, ReportEntity],
-  //   synchronize: true
-  // }), 
-  UserModule, 
-  ReportModule],
+        synchronize: true,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      })
+    }),
+    // Use this without .ENV files
+    // TypeOrmModule.forRoot({
+    //   type: 'sqlite',
+    //   database: 'udemy.cars.nestjs.sqlite',
+    //   entities: [UserEntity, ReportEntity],
+    //   synchronize: true
+    // }), 
+    UserModule, 
+    ReportModule],
   controllers: [AppController],
   providers: [AppService, ConfigService],
 })
