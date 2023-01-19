@@ -20,7 +20,7 @@ import * as cookies from 'express-session';
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         type: 'postgres',
-        url: process.env.CRUNCHY_DATABASE_URL,
+        url: process.env.CRUNCHY_POSTGRES_COBALT_DATABASE_URL,
         //type: 'sqlite',
         //database: config.get<string>('DB_FILENAME'),
         entities: [UserEntity, ReportEntity],
