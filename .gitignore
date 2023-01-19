@@ -20,7 +20,7 @@ pids
 build/Release
 
 # Dependency directories
-**/dist/
+**/dist
 **/node_modules
 jspm_packages/
 
