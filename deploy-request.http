@@ -1,0 +1,128 @@
+### Get Hello
+GET https://fierce-escarpment-46110.herokuapp.com/ HTTP/1.1
+Content-Type: application/json
+
+
+### Create user = Sign Up
+POST https://fierce-escarpment-46110.herokuapp.com/auth/signup HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "rmc3408@gmail.com",
+  "password": "secret@123",
+  "age": 2394
+}
+
+### SignIn
+POST https://fierce-escarpment-46110.herokuapp.com/auth/signin HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "rmc3408@gmail.com",
+  "password": "secret@123"
+}
+
+
+### WHO is user by cookie session userID
+GET https://fierce-escarpment-46110.herokuapp.com/auth/whoami HTTP/1.1
+Content-Type: application/json
+
+
+### WHO is user by decorator
+GET https://fierce-escarpment-46110.herokuapp.com/auth/whoUser HTTP/1.1
+Content-Type: application/json
+
+
+### SignOUT
+POST https://fierce-escarpment-46110.herokuapp.com/auth/signout HTTP/1.1
+Content-Type: application/json
+
+
+### Get One user by id
+GET https://fierce-escarpment-46110.herokuapp.com/auth/1 HTTP/1.1
+Content-Type: application/json
+
+
+### Get All users by email
+GET https://fierce-escarpment-46110.herokuapp.com/auth?email=molinaro@gmail.com HTTP/1.1
+Content-Type: application/json
+
+
+### Remove user by id
+DELETE https://fierce-escarpment-46110.herokuapp.com/auth/8 HTTP/1.1
+Content-Type: application/json
+
+
+### Update user
+PATCH https://fierce-escarpment-46110.herokuapp.com/auth/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "molinaro@gmail.com"
+}
+
+
+### Get colors
+GET https://fierce-escarpment-46110.herokuapp.com/auth/session HTTP/1.1
+Content-Type: application/json
+
+
+### Set colors in Query
+GET https://fierce-escarpment-46110.herokuapp.com/auth/session/blue HTTP/1.1
+Content-Type: application/json
+
+### Get Hello
+GET https://fierce-escarpment-46110.herokuapp.com/ HTTP/1.1
+Content-Type: application/json
+
+
+### Create report
+POST https://fierce-escarpment-46110.herokuapp.com/report HTTP/1.1
+Content-Type: application/json
+
+{
+  "price": 200.00,
+  "make": "Tesla",
+  "model": "MDX",
+  "year": 2022,
+  "latitude": -20,
+  "longitude": 23,
+  "mileage": 5000
+}
+
+### Aprove report - patch
+PATCH https://fierce-escarpment-46110.herokuapp.com/report/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "aproved": true
+}
+
+### SignIn
+POST https://fierce-escarpment-46110.herokuapp.com/auth/signin HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "rmc3408@gmail.com",
+  "password": "secret@123"
+}
+
+
+
+### Get Estimate of Reports
+@car-make=Tesla
+@car-model=MDX
+@car-lat=-19.330
+@car-lgn=18.90
+@car-year=2020
+@car-mileage=5000
+
+GET https://fierce-escarpment-46110.herokuapp.com/report
+  ?make={{car-make}}
+  &model={{car-model}}
+  &mileage={{car-mileage}}
+  &year={{car-year}}
+  &longitude={{car-lgn}}
+  &latitude={{car-lat}}
+  
+Content-Type: application/json
